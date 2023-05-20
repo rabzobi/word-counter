@@ -1,2 +1,2 @@
-# word-counter
-Word counter
+# Word Counter
+Word counter tech challenge
