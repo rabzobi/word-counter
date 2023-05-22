@@ -1,6 +1,7 @@
 package za.co.garland.wordcounter;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WordCounter {
@@ -20,6 +21,12 @@ public class WordCounter {
         String translatedWord = translator.translate(word);
 
         wordCount.put(word, wordCount.getOrDefault(translatedWord, 0) + 1);
+    }
+
+    public synchronized void addWords(List<String> words) throws WordException {
+        for (String word: words){
+            addWord(word);
+        }
     }
 
     private boolean isValidWord(String word) {

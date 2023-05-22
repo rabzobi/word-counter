@@ -3,6 +3,7 @@ package za.co.garland.wordcounter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,6 +24,21 @@ class WordCounterTest {
         wordCounter.addWord("flower");
         wordCounter.addWord("flower");
         wordCounter.addWord("flor");
+
+        assertEquals(3, wordCounter.countWord("flower"));
+        assertEquals(1, wordCounter.countWord("flor"));
+        assertEquals(0, wordCounter.countWord("rose"));
+    }
+
+    @Test
+    void testAddValidWordList() throws WordException {
+        List<String> words = new ArrayList();
+        words.add("flower");
+        words.add("flower");
+        words.add("flower");
+        words.add("flor");
+
+        wordCounter.addWords(words);
 
         assertEquals(3, wordCounter.countWord("flower"));
         assertEquals(1, wordCounter.countWord("flor"));
