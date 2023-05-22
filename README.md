@@ -13,7 +13,7 @@ Each method has a clear and specific responsibility.
 ###  Optimization
 The word counts are stored in a HashMap for efficient lookups and updates.
 ### Thread safety
-HashMap is not a thread-safe implementation, so the addWord method is synchronized 
+HashMap is not a thread-safe implementation of a Map, so the addWord method is synchronized 
 to only allow one thread to update it at a time.
 ### Translator
 The Translator class should be replaced with an implementation,
