@@ -2,45 +2,44 @@ package za.co.garland.wordcounter;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class WordCounter {
 
-    private Map<String,Integer> map = new HashMap();
-    Translator translator = new Translator();
+    private Map<String,Integer> wordCount;
+    Translator translator;
 
-    public synchronized void addWord(String word) throws Exception {
-        word = translator.translate(word);
-
-        if (word == null || word.trim().isEmpty()) {
-            throw new Exception("null or empty string");
-        }
-        Pattern pattern = Pattern.compile("[^A-Za-z]");
-        Matcher matcher = pattern.matcher(word);
-        boolean found = matcher.find();
-        if (found) {
-            throw new Exception("There is a special character in the word");
-        }
-        Integer count = map.get(word);
-        if (count == null){
-            map.put(word,1);
-        } else {
-            map.put(word,count+1);
-        }
+    public WordCounter(){
+        wordCount = new HashMap();
+        translator = new Translator();
     }
 
-    public Integer countOccurrenceOfWord(String word){
-        word = translator.translate(word);
-        return map.get(word);
+    public synchronized void addWord(String word) throws WordException {
+        if (!isValidWord(word)) {
+            throw new WordException("Invalid word");
+        }
+        String translatedWord = translator.translate(word);
+
+        wordCount.put(word, wordCount.getOrDefault(translatedWord, 0) + 1);
+    }
+
+    private boolean isValidWord(String word) {
+        if (word == null || word.trim().isEmpty()) {
+            return false;
+        }
+        return word.matches("[a-zA-Z]+");
+    }
+
+    public Integer countWord(String word){
+        String translatedWord = translator.translate(word);
+        return wordCount.getOrDefault(translatedWord,0);
     }
 
     @Override
     public String toString() {
-        StringBuffer stringBuffer = new StringBuffer();
-        for (String word: map.keySet()){
-            stringBuffer.append(word+":"+map.get(word)+"\n");
+        String words = new String();
+        for (String word: wordCount.keySet()){
+            words += word+":"+ wordCount.get(word)+"\n";
         }
-        return stringBuffer.toString();
+        return words;
     }
 }
